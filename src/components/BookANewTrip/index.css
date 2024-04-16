@@ -41,7 +41,6 @@ li {
   padding: 30px;
   margin-left: 20px;
   width: 500px;
-
   font-family: 'roboto';
 }
 .mytrip-details-container h1 {
@@ -60,13 +59,7 @@ li {
   display: flex;
   flex-direction: column;
 }
-.detailsform-card form div input {
-  border-radius: 5px;
-  height: 30px;
-  width: 250px;
-  margin-top: 10px;
-  border-color: #cbd5e1;
-}
+
 .next-button {
   border-radius: 7px;
   padding: 6px 10px;

@@ -3,15 +3,15 @@ import Cookie from 'js-cookie'
 import './index.css'
 
 const Header = props => {
+  const {history} = props
   const logoutButton = () => {
-    const {history} = props
-    Cookie.remove('jwt_token')
     history.replace('/login')
+    Cookie.remove('jwt_token')
   }
   return (
     <nav className="nav-container">
       <div className="nav-card">
-        <Link to="/">
+        <Link to="/" style={{textDecoration: 'none'}}>
           <h1 className="nav-logo">Travel Trip</h1>
         </Link>
 
@@ -23,12 +23,9 @@ const Header = props => {
             My Trips
           </Link>
         </div>
-
-        <Link to="/login">
-          <button className="logout-btn" type="button" onClick={logoutButton}>
-            Logout
-          </button>
-        </Link>
+        <button className="logout-btn" type="button" onClick={logoutButton}>
+          Logout
+        </button>
       </div>
     </nav>
   )

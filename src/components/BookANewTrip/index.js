@@ -2,6 +2,8 @@ import {Component} from 'react'
 import {v4 as uuidv4} from 'uuid'
 import Header from '../Header'
 import ReactContext from '../../context/ReactContext'
+import YourDetailsPage from '../YourDetailsPage'
+import DateSelectionPage from '../DateSelectionPage'
 import './index.css'
 
 const stepsList = [
@@ -42,11 +44,6 @@ const travelAssistanceList = [
 class BookANewTrip extends Component {
   state = {
     activeId: stepsList[0].stepId,
-    nameErrMsg: '',
-    startErrMsg: '',
-    endErrMsg: '',
-    startDateErrMsg: '',
-    endDateErrMsg: '',
     name: '',
     startLocation: '',
     endLocation: '',
@@ -59,212 +56,23 @@ class BookANewTrip extends Component {
     travelAssistance: travelAssistanceList[0].displayText,
   }
 
-  yourDetailsPage = () => {
-    const {
-      nameErrMsg,
-      startErrMsg,
-      endErrMsg,
+  yourDetailsNextButton = (num1, num2, name, startLocation, endLocation) => {
+    stepsList[num1].isCompleted = true
+    this.setState({
+      activeId: stepsList[num2].stepId,
       name,
       startLocation,
       endLocation,
-    } = this.state
-    const onNameErrMsg = event => {
-      if (event.target.value === '') {
-        this.setState({nameErrMsg: 'Enter your name'})
-      } else {
-        this.setState({nameErrMsg: ''})
-      }
-    }
-    const onStartErrMsg = event => {
-      if (event.target.value === '') {
-        this.setState({startErrMsg: 'Enter your start location'})
-      } else {
-        this.setState({startErrMsg: ''})
-      }
-    }
-    const onEndErrMsg = event => {
-      if (event.target.value === '') {
-        this.setState({endErrMsg: 'Enter your end location'})
-      } else {
-        this.setState({endErrMsg: ''})
-      }
-    }
-    const onUpdateName = event => {
-      this.setState({name: event.target.value})
-    }
-    const onUpdatestartLocation = event => {
-      this.setState({startLocation: event.target.value})
-    }
-    const onUpdateEndLocation = event => {
-      this.setState({endLocation: event.target.value})
-    }
-    const nextButton = () => {
-      if (name === '') {
-        this.setState({nameErrMsg: 'Enter your name'})
-      } else if (startLocation === '') {
-        this.setState({startErrMsg: 'Enter your start location'})
-      } else if (endLocation === '') {
-        this.setState({endErrMsg: 'Enter your end location'})
-      } else {
-        stepsList[0].isCompleted = true
-        this.setState({activeId: stepsList[1].stepId})
-      }
-    }
-    return (
-      <div className="mytrip-details-container">
-        <h1>Your Details</h1>
-        <p className="mytrip-details-description">
-          Enter your name and location details
-        </p>
-        <div className="detailsform-card">
-          <form>
-            <div>
-              <label htmlFor="name">Name</label>
-              <br />
-              <input
-                id="name"
-                type="text"
-                placeholder="Enter name"
-                value={name}
-                onBlur={onNameErrMsg}
-                onChange={onUpdateName}
-              />
-              <p className="error-msg">{nameErrMsg}</p>
-            </div>
-            <div>
-              <label htmlFor="name">Start Location</label>
-              <br />
-              <input
-                id="name"
-                type="text"
-                placeholder="Enter start location"
-                value={startLocation}
-                onBlur={onStartErrMsg}
-                onChange={onUpdatestartLocation}
-              />
-              <p className="error-msg">{startErrMsg}</p>
-            </div>
-            <div>
-              <label htmlFor="name">End Location</label>
-              <br />
-              <input
-                id="name"
-                type="text"
-                placeholder="Enter end location"
-                value={endLocation}
-                onBlur={onEndErrMsg}
-                onChange={onUpdateEndLocation}
-              />
-              <p className="error-msg">{endErrMsg}</p>
-            </div>
-            <div className="button-container">
-              <button
-                type="button"
-                className="next-button"
-                onClick={nextButton}
-              >
-                Next
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    )
+    })
   }
 
-  dateSelectionPage = () => {
-    const {startDateErrMsg, endDateErrMsg, startDate, endDate} = this.state
-    const onstartDateErrMsg = event => {
-      if (event.target.value === '') {
-        this.setState({startDateErrMsg: 'Select start data'})
-      } else {
-        this.setState({startDateErrMsg: ''})
-      }
-    }
-    const onEndDateErrMsg = event => {
-      if (event.target.value === '') {
-        this.setState({endDateErrMsg: 'Select end data'})
-      } else {
-        this.setState({endDateErrMsg: ''})
-      }
-    }
-    const updateStartDate = event => {
-      this.setState({startDate: event.target.value})
-    }
-    const updateEndDate = event => {
-      this.setState({endDate: event.target.value})
-    }
-    const nextButton = () => {
-      const startDateObject = new Date(startDate)
-      const endDateObject = new Date(endDate)
-      if (startDate === '') {
-        this.setState({startDateErrMsg: 'Select start data'})
-      } else if (endDate === '') {
-        this.setState({endDateErrMsg: 'Select end data'})
-      } else if (endDateObject - startDateObject < 0) {
-        this.setState({
-          endDateErrMsg: 'The end date cannot be less than start date',
-        })
-      } else {
-        stepsList[1].isCompleted = true
-        this.setState({activeId: stepsList[2].stepId})
-      }
-    }
-    const previousButton = () => {
-      this.setState({activeId: stepsList[0].stepId})
-    }
-    return (
-      <div className="mytrip-details-container">
-        <h1>Date Selection</h1>
-        <p className="mytrip-details-description">
-          Select your Start and End Date.
-        </p>
-        <div className="detailsform-card">
-          <form>
-            <div>
-              <label htmlFor="startdate">Start Date</label>
-              <br />
-              <input
-                id="startdate"
-                type="date"
-                value={startDate}
-                onBlur={onstartDateErrMsg}
-                onChange={updateStartDate}
-              />
-              <p className="error-msg">{startDateErrMsg}</p>
-            </div>
-            <div>
-              <label htmlFor="startdate">Start Date</label>
-              <br />
-              <input
-                id="startdate"
-                type="date"
-                value={endDate}
-                onBlur={onEndDateErrMsg}
-                onChange={updateEndDate}
-              />
-              <p className="error-msg">{endDateErrMsg}</p>
-            </div>
-            <div className="button-container">
-              <button
-                type="button"
-                className="previous-button"
-                onClick={previousButton}
-              >
-                Previous
-              </button>
-              <button
-                type="button"
-                className="next-button"
-                onClick={nextButton}
-              >
-                Next
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    )
+  dateSelectionNextButton = (num1, num2, startDate, endDate) => {
+    stepsList[num1].isCompleted = true
+    this.setState({activeId: stepsList[num2].stepId, startDate, endDate})
+  }
+
+  previousButton = num1 => {
+    this.setState({activeId: stepsList[num1].stepId})
   }
 
   guestsPage = () => {
@@ -586,13 +394,13 @@ class BookANewTrip extends Component {
         >
           <img
             src="https://assets.ccbp.in/frontend/react-js/travel-trip-steps-successfully-completed-img.png"
-            alt=""
+            alt="success"
             className="awesome-tick"
           />
           <h1>Awesome!</h1>
           <p>Your book has been confirmed</p>
           <button type="button" className="next-button" onClick={bookAnewTrip}>
-            Book a New Trip
+            Book a new trip
           </button>
         </div>
       </div>
@@ -602,9 +410,16 @@ class BookANewTrip extends Component {
   switchStatementFunction = activeId => {
     switch (activeId) {
       case stepsList[0].stepId:
-        return this.yourDetailsPage()
+        return (
+          <YourDetailsPage yourDetailsNextButton={this.yourDetailsNextButton} />
+        )
       case stepsList[1].stepId:
-        return this.dateSelectionPage()
+        return (
+          <DateSelectionPage
+            previousButton={this.previousButton}
+            dateSelectionNextButton={this.dateSelectionNextButton}
+          />
+        )
       case stepsList[2].stepId:
         return this.guestsPage()
       case stepsList[3].stepId:
@@ -614,7 +429,7 @@ class BookANewTrip extends Component {
       case 'awesomePage':
         return this.awesomePage()
       default:
-        return this.guestsPage()
+        return this.awesomePage()
     }
   }
 
@@ -641,7 +456,7 @@ class BookANewTrip extends Component {
                         <img
                           src="https://assets.ccbp.in/frontend/react-js/travel-trip-steps-successfully-completed-img.png"
                           className="completed-tick-icon"
-                          alt=""
+                          alt={each.displayText}
                         />
                       ) : (
                         <p

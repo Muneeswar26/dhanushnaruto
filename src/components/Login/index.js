@@ -3,17 +3,7 @@ import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
 
 import {IoEyeOffOutline, IoEyeOutline} from 'react-icons/io5'
-import {
-  LoginContainer,
-  LoginCard,
-  Heading,
-  InputContainer,
-  LabelEl,
-  InputEl,
-  PasswordContainer,
-  PasswordInputEl,
-  LoginButton,
-} from './styledComponents'
+
 import './index.css'
 
 class Login extends Component {
@@ -23,6 +13,13 @@ class Login extends Component {
     username: '',
     password: '',
     errorMsg: '',
+  }
+
+  showHidePassword = () => {
+    this.setState(prevState => {
+      const newInputType = prevState.isEyesOpened ? 'password' : 'text'
+      return {isEyesOpened: !prevState.isEyesOpened, inputType: newInputType}
+    })
   }
 
   passwordShow = () => {
@@ -61,10 +58,10 @@ class Login extends Component {
     const response = await fetch(url, options)
     const data = await response.json()
 
-    if (response.ok === false) {
-      this.setState({errorMsg: data.error_msg})
-    } else {
+    if (response.ok === true) {
       this.showSuccess(data.jwt_token)
+    } else {
+      this.setState({errorMsg: data.error_msg})
     }
   }
 
@@ -75,46 +72,59 @@ class Login extends Component {
       return <Redirect to="/" />
     }
     return (
-      <LoginContainer>
-        <LoginCard>
+      <div className="login-container">
+        <div className="login-card">
           <form onSubmit={this.submitLogin}>
-            <Heading>Travel Trip</Heading>
-            <InputContainer>
-              <LabelEl htmlFor="username">Username</LabelEl>
-              <InputEl
+            <h1 className="login-heading">Travel Trip</h1>
+            <div className="input-container">
+              <label htmlFor="username" className="label-el">
+                Username
+              </label>
+              <input
                 id="username"
                 type="text"
                 placeholder="Username"
+                className="input-el"
                 onChange={this.onChangeUserName}
               />
-            </InputContainer>
-            <InputContainer>
-              <LabelEl htmlFor="password">Password</LabelEl>
-              <PasswordContainer>
-                <PasswordInputEl
+            </div>
+            <div className="input-container">
+              <label htmlFor="password" className="label-el">
+                Password
+              </label>
+              <div className="password-container">
+                <input
                   id="password"
                   type={inputType}
                   placeholder="Password"
+                  className="password-input-el"
                   onChange={this.onChangePassword}
                 />
-                {isEyesOpened ? (
-                  <IoEyeOffOutline
-                    className="eye-icon"
-                    onClick={this.passwordHide}
-                  />
-                ) : (
-                  <IoEyeOutline
-                    className="eye-icon"
-                    onClick={this.passwordShow}
-                  />
-                )}
-              </PasswordContainer>
-            </InputContainer>
+                <button
+                  type="button"
+                  className="show-hide-button"
+                  data-testid="show-password"
+                  onClick={this.showHidePassword}
+                >
+                  {isEyesOpened ? (
+                    <IoEyeOffOutline className="eye-icon" />
+                  ) : (
+                    <IoEyeOutline className="eye-icon" />
+                  )}
+                </button>
+              </div>
+            </div>
             <p className="error-message">{errorMsg}</p>
-            <LoginButton type="submit">Login</LoginButton>
+            <button
+              type="submit"
+              className="login-button"
+              onClick={this.submitLogin}
+            >
+              Login
+            </button>
           </form>
-        </LoginCard>
-      </LoginContainer>
+        </div>
+      </div>
     )
   }
 }

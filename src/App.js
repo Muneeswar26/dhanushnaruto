@@ -49,6 +49,7 @@ class App extends Component {
               component={BookANewTrip}
             />
             <ProtectedRoute exact path="/my-trips" component={MyTrips} />
+            <Route exact path="/bad-path" component={NotFound} />
             <Route component={NotFound} />
           </Switch>
         </BrowserRouter>

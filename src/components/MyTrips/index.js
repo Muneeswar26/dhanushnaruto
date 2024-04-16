@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom'
 import ReactContext from '../../context/ReactContext'
 import Header from '../Header'
 import './index.css'
@@ -48,18 +49,23 @@ const MyTrips = props => (
 
       const noItemsPage = () => (
         <div className="noItemsPage-container">
-          <img src="https://i.ibb.co/gmhNmKT/Frame-1000003896.png" alt="" />
-          <h1 className="noItemsPage-heading">No Upcoming trips</h1>
+          <img
+            src="https://i.ibb.co/gmhNmKT/Frame-1000003896.png"
+            alt="no trips"
+          />
+          <h1 className="noItemsPage-heading">No upcoming trips</h1>
           <p style={{color: '#64748b'}}>
             When you book a trip, you will see your trip details here.
           </p>
-          <button
-            type="button"
-            className="book-button"
-            onClick={bookANewTripButton}
-          >
-            Book a New Trip
-          </button>
+          <Link to="/book-a-new-trip" style={{textDecoration: 'none'}}>
+            <button
+              type="button"
+              className="book-button"
+              onClick={bookANewTripButton}
+            >
+              Book a new trip
+            </button>
+          </Link>
         </div>
       )
 
