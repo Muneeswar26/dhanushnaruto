@@ -2,8 +2,7 @@ import {Component} from 'react'
 import {v4 as uuidv4} from 'uuid'
 import Header from '../Header'
 import ReactContext from '../../context/ReactContext'
-import YourDetailsPage from '../YourDetailsPage'
-import DateSelectionPage from '../DateSelectionPage'
+
 import './index.css'
 
 const stepsList = [
@@ -54,25 +53,208 @@ class BookANewTrip extends Component {
     infantAgeCount: 0,
     isCheckboxChecked: false,
     travelAssistance: travelAssistanceList[0].displayText,
+    nameErrMsg: '',
+    startErrMsg: '',
+    endErrMsg: '',
+    endDateErrMsg: '',
+    startDateErrMsg: '',
   }
 
-  yourDetailsNextButton = (num1, num2, name, startLocation, endLocation) => {
-    stepsList[num1].isCompleted = true
-    this.setState({
-      activeId: stepsList[num2].stepId,
+  yourDetailsPage = () => {
+    const {
       name,
       startLocation,
       endLocation,
-    })
+      nameErrMsg,
+      startErrMsg,
+      endErrMsg,
+    } = this.state
+
+    const onUpdateName = event => {
+      this.setState({name: event.target.value})
+    }
+
+    const onUpdateStartLocation = event => {
+      this.setState({startLocation: event.target.value})
+    }
+
+    const onUpdateEndLocation = event => {
+      this.setState({endLocation: event.target.value})
+    }
+    const nextButton = () => {
+      if (name === '') {
+        this.setState({nameErrMsg: 'Enter your name'})
+      } else if (startLocation === '') {
+        this.setState({
+          startErrMsg: 'Enter your start location',
+          nameErrMsg: '',
+        })
+      } else if (endLocation === '') {
+        this.setState({
+          endErrMsg: 'Enter your end location',
+          nameErrMsg: '',
+          startErrMsg: '',
+        })
+      } else {
+        stepsList[0].isCompleted = true
+        this.setState({activeId: stepsList[1].stepId})
+      }
+    }
+
+    return (
+      <div className="mytrip-details-container">
+        <h1>Your Details</h1>
+        <p className="mytrip-details-description">
+          Enter your name and location details
+        </p>
+        <div className="detailsform-card">
+          <form>
+            <div>
+              <label htmlFor="name">Name</label>
+              <br />
+              <input
+                id="name"
+                type="text"
+                placeholder="Enter name"
+                className="input-el"
+                value={name}
+                onChange={onUpdateName}
+              />
+              <p className="error-msg">{nameErrMsg}</p>
+            </div>
+            <div>
+              <label htmlFor="name">Start Location</label>
+              <br />
+              <input
+                id="name"
+                type="text"
+                className="input-el"
+                placeholder="Enter start location"
+                value={startLocation}
+                onChange={onUpdateStartLocation}
+              />
+              <p className="error-msg">{startErrMsg}</p>
+            </div>
+            <div>
+              <label htmlFor="name">End Location</label>
+              <br />
+              <input
+                id="name"
+                type="text"
+                className="input-el"
+                placeholder="Enter end location"
+                value={endLocation}
+                onChange={onUpdateEndLocation}
+              />
+              <p className="error-msg">{endErrMsg}</p>
+            </div>
+            <div className="button-container">
+              <button
+                type="button"
+                className="next-button"
+                onClick={nextButton}
+              >
+                Next
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
   }
 
-  dateSelectionNextButton = (num1, num2, startDate, endDate) => {
-    stepsList[num1].isCompleted = true
-    this.setState({activeId: stepsList[num2].stepId, startDate, endDate})
-  }
+  dateSelectionPage = () => {
+    const {startDate, endDate, startDateErrMsg, endDateErrMsg} = this.state
 
-  previousButton = num1 => {
-    this.setState({activeId: stepsList[num1].stepId})
+    const onstartDateErrMsg = event => {
+      if (event.target.value === '') {
+        this.setState({startDateErrMsg: 'Select start data'})
+      } else {
+        this.setState({startDateErrMsg: ''})
+      }
+    }
+
+    const onEndDateErrMsg = event => {
+      if (event.target.value === '') {
+        this.setState({endDateErrMsg: 'Select end data'})
+      } else {
+        this.setState({endDateErrMsg: ''})
+      }
+    }
+
+    const updateStartDate = event => {
+      this.setState({startDate: event.target.value})
+    }
+
+    const updateEndDate = event => {
+      this.setState({endDate: event.target.value})
+    }
+    const nextButton = () => {
+      const startDateObject = new Date(startDate)
+      const endDateObject = new Date(endDate)
+      if (startDate === '') {
+        this.setState({startDateErrMsg: 'Select start date'})
+      } else if (endDate === '') {
+        this.setState({endDateErrMsg: 'Select end data'})
+      } else if (endDateObject - startDateObject < 0) {
+        this.setState({
+          endDateErrMsg: 'The end date cannot be less than start date',
+        })
+      } else {
+        stepsList[1].isCompleted = true
+        this.setState({activeId: stepsList[2].stepId})
+      }
+    }
+    const previousButton = () => {
+      this.setState({activeId: stepsList[0].stepId})
+    }
+
+    return (
+      <div className="myTrip-details-container">
+        <h1 className="myTrips-heading">Date Selection</h1>
+        <p className="myTrip-details-description">
+          Select your Start and End Date
+        </p>
+        <form className="detailsForm-card">
+          <label htmlFor="startDate">Start Date</label>
+          <br />
+          <input
+            id="startDate"
+            type="date"
+            className="date-input"
+            value={startDate}
+            onBlur={onstartDateErrMsg}
+            onChange={updateStartDate}
+          />
+          <p className="error-msg">{startDateErrMsg}</p>
+
+          <label htmlFor="endDate">End Date</label>
+          <br />
+          <input
+            id="endDate"
+            type="date"
+            className="date-input"
+            value={endDate}
+            onBlur={onEndDateErrMsg}
+            onChange={updateEndDate}
+          />
+          <p className="error-msg">{endDateErrMsg}</p>
+
+          <div className="button-container">
+            <button
+              type="button"
+              className="previous-button"
+              onClick={previousButton}
+            >
+              Previous
+            </button>
+            <button type="button" className="next-button" onClick={nextButton}>
+              Next
+            </button>
+          </div>
+        </form>
+      </div>
+    )
   }
 
   guestsPage = () => {
@@ -408,22 +590,11 @@ class BookANewTrip extends Component {
   }
 
   switchStatementFunction = activeId => {
-    const {name, startLocation, endLocation} = this.state
     switch (activeId) {
       case stepsList[0].stepId:
-        return (
-          <YourDetailsPage
-            items={{name, startLocation, endLocation}}
-            yourDetailsNextButton={this.yourDetailsNextButton}
-          />
-        )
+        return this.yourDetailsPage()
       case stepsList[1].stepId:
-        return (
-          <DateSelectionPage
-            previousButton={this.previousButton}
-            dateSelectionNextButton={this.dateSelectionNextButton}
-          />
-        )
+        return this.dateSelectionPage()
       case stepsList[2].stepId:
         return this.guestsPage()
       case stepsList[3].stepId:
