@@ -408,10 +408,14 @@ class BookANewTrip extends Component {
   }
 
   switchStatementFunction = activeId => {
+    const {name, startLocation, endLocation} = this.state
     switch (activeId) {
       case stepsList[0].stepId:
         return (
-          <YourDetailsPage yourDetailsNextButton={this.yourDetailsNextButton} />
+          <YourDetailsPage
+            items={{name, startLocation, endLocation}}
+            yourDetailsNextButton={this.yourDetailsNextButton}
+          />
         )
       case stepsList[1].stepId:
         return (

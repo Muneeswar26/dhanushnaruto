@@ -44,14 +44,13 @@ class YourDetailsPage extends Component {
 
   render() {
     const {
-      nameErrMsg,
-      startErrMsg,
-      endErrMsg,
       name,
       startLocation,
       endLocation,
+      nameErrMsg,
+      startErrMsg,
+      endErrMsg,
     } = this.state
-
     return (
       <div className="mytrip-details-container">
         <h1>Your Details</h1>

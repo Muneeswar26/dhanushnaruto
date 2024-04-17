@@ -34,7 +34,7 @@ class DateSelectionPage extends Component {
     const startDateObject = new Date(startDate)
     const endDateObject = new Date(endDate)
     if (startDate === '') {
-      this.setState({startDateErrMsg: 'Select start data'})
+      this.setState({startDateErrMsg: 'Select start date'})
     } else if (endDate === '') {
       this.setState({endDateErrMsg: 'Select end data'})
     } else if (endDateObject - startDateObject < 0) {
@@ -55,55 +55,51 @@ class DateSelectionPage extends Component {
     const {startDateErrMsg, endDateErrMsg, startDate, endDate} = this.state
 
     return (
-      <div className="mytrip-details-container">
-        <form>
-          <h1>Date Selection</h1>
-          <p className="mytrip-details-description">
-            Select your Start and End Date.
-          </p>
-          <div className="detailsform-card">
-            <div>
-              <label htmlFor="startDate">Start Date</label>
-              <br />
-              <input
-                id="startDate"
-                type="date"
-                className="date-input"
-                value={startDate}
-                onBlur={this.onstartDateErrMsg}
-                onChange={this.updateStartDate}
-              />
-              <p className="error-msg">{startDateErrMsg}</p>
-            </div>
-            <div>
-              <label htmlFor="startdate">Start Date</label>
-              <br />
-              <input
-                id="startdate"
-                type="date"
-                className="date-input"
-                value={endDate}
-                onBlur={this.onEndDateErrMsg}
-                onChange={this.updateEndDate}
-              />
-              <p className="error-msg">{endDateErrMsg}</p>
-            </div>
-            <div className="button-container">
-              <button
-                type="button"
-                className="previous-button"
-                onClick={this.onPreviousButton}
-              >
-                Previous
-              </button>
-              <button
-                type="button"
-                className="next-button"
-                onClick={this.onDateSelectionNextButton}
-              >
-                Next
-              </button>
-            </div>
+      <div className="myTrip-details-container">
+        <h1 className="myTrips-heading">Date Selection</h1>
+        <p className="myTrip-details-description">
+          Select your Start and End Date
+        </p>
+        <form className="detailsForm-card">
+          <label htmlFor="startDate">Start Date</label>
+          <br />
+          <input
+            id="startDate"
+            type="date"
+            className="date-input"
+            value={startDate}
+            onBlur={this.onstartDateErrMsg}
+            onChange={this.updateStartDate}
+          />
+          <p className="error-msg">{startDateErrMsg}</p>
+
+          <label htmlFor="endDate">End Date</label>
+          <br />
+          <input
+            id="endDate"
+            type="date"
+            className="date-input"
+            value={endDate}
+            onBlur={this.onEndDateErrMsg}
+            onChange={this.updateEndDate}
+          />
+          <p className="error-msg">{endDateErrMsg}</p>
+
+          <div className="button-container">
+            <button
+              type="button"
+              className="previous-button"
+              onClick={this.onPreviousButton}
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              className="next-button"
+              onClick={this.onDateSelectionNextButton}
+            >
+              Next
+            </button>
           </div>
         </form>
       </div>

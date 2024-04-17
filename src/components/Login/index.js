@@ -84,7 +84,7 @@ class Login extends Component {
                 id="username"
                 type="text"
                 placeholder="Username"
-                className="input-el"
+                className="input-El"
                 onChange={this.onChangeUserName}
               />
             </div>
