@@ -52,7 +52,7 @@ class BookANewTrip extends Component {
     childrenAgeCount: 0,
     infantAgeCount: 0,
     isCheckboxChecked: false,
-    travelAssistance: travelAssistanceList[0].displayText,
+    travelAssistance: travelAssistanceList[2].displayText,
     nameErrMsg: '',
     startErrMsg: '',
     endErrMsg: '',
@@ -123,10 +123,10 @@ class BookANewTrip extends Component {
               <p className="error-msg">{nameErrMsg}</p>
             </div>
             <div>
-              <label htmlFor="name">Start Location</label>
+              <label htmlFor="startLocation">Start Location</label>
               <br />
               <input
-                id="name"
+                id="startLocation"
                 type="text"
                 className="input-el"
                 placeholder="Enter start location"
@@ -136,10 +136,10 @@ class BookANewTrip extends Component {
               <p className="error-msg">{startErrMsg}</p>
             </div>
             <div>
-              <label htmlFor="name">End Location</label>
+              <label htmlFor="endLocation">End Location</label>
               <br />
               <input
-                id="name"
+                id="endLocation"
                 type="text"
                 className="input-el"
                 placeholder="Enter end location"
@@ -195,10 +195,10 @@ class BookANewTrip extends Component {
       if (startDate === '') {
         this.setState({startDateErrMsg: 'Select start date'})
       } else if (endDate === '') {
-        this.setState({endDateErrMsg: 'Select end data'})
+        this.setState({endDateErrMsg: 'Select end date'})
       } else if (endDateObject - startDateObject < 0) {
         this.setState({
-          endDateErrMsg: 'The end date cannot be less than start date',
+          endDateErrMsg: 'The end date cannot be less than the start date',
         })
       } else {
         stepsList[1].isCompleted = true
@@ -263,7 +263,12 @@ class BookANewTrip extends Component {
       this.setState(prevState => ({adultAgeCount: prevState.adultAgeCount + 1}))
     }
     const onAdultDecrement = () => {
-      this.setState(prevState => ({adultAgeCount: prevState.adultAgeCount - 1}))
+      this.setState(prevState => {
+        if (prevState.adultAgeCount === 1) {
+          return {adultAgeCount: prevState.adultAgeCount}
+        }
+        return {adultAgeCount: prevState.adultAgeCount - 1}
+      })
     }
     const onChildAgeIncrement = () => {
       this.setState(prevState => ({
@@ -306,13 +311,21 @@ class BookANewTrip extends Component {
               </p>
             </div>
             <div className="guest-container-age-card">
-              <p className="Age-minus-plus " onClick={onAdultDecrement}>
+              <button
+                type="button"
+                className="Age-minus-plus "
+                onClick={onAdultDecrement}
+              >
                 -
-              </p>
+              </button>
               <p className="count-members">{adultAgeCount}</p>
-              <p className="Age-minus-plus " onClick={onAdultIncrement}>
+              <button
+                type="button"
+                className="Age-minus-plus "
+                onClick={onAdultIncrement}
+              >
                 +
-              </p>
+              </button>
             </div>
           </div>
           <div className="guest-container-card">
@@ -323,13 +336,21 @@ class BookANewTrip extends Component {
               </p>
             </div>
             <div className="guest-container-age-card">
-              <p className="Age-minus-plus " onClick={onChildAgeDecrement}>
+              <button
+                type="button"
+                className="Age-minus-plus "
+                onClick={onChildAgeDecrement}
+              >
                 -
-              </p>
+              </button>
               <p className="count-members">{childrenAgeCount}</p>
-              <p className="Age-minus-plus " onClick={onChildAgeIncrement}>
+              <button
+                type="button"
+                className="Age-minus-plus "
+                onClick={onChildAgeIncrement}
+              >
                 +
-              </p>
+              </button>
             </div>
           </div>
           <div className="guest-container-card">
@@ -340,13 +361,21 @@ class BookANewTrip extends Component {
               </p>
             </div>
             <div className="guest-container-age-card">
-              <p className="Age-minus-plus " onClick={onInfantAgeDecrement}>
+              <button
+                type="button"
+                className="Age-minus-plus "
+                onClick={onInfantAgeDecrement}
+              >
                 -
-              </p>
+              </button>
               <p className="count-members">{infantAgeCount}</p>
-              <p className="Age-minus-plus " onClick={onInfantAgeIncrement}>
+              <button
+                type="button"
+                className="Age-minus-plus "
+                onClick={onInfantAgeIncrement}
+              >
                 +
-              </p>
+              </button>
             </div>
           </div>
           <div className="button-container" style={{marginTop: '10px'}}>
@@ -367,7 +396,7 @@ class BookANewTrip extends Component {
   }
 
   travelAssistance = () => {
-    const {isCheckboxChecked} = this.state
+    const {isCheckboxChecked, travelAssistance} = this.state
     const oncheckBoxChecked = () => {
       this.setState(prevState => ({
         isCheckboxChecked: !prevState.isCheckboxChecked,
@@ -393,12 +422,13 @@ class BookANewTrip extends Component {
           <div style={{marginBottom: '20px'}}>
             <input
               type="checkbox"
+              checked={isCheckboxChecked}
               onClick={oncheckBoxChecked}
               id="check"
               style={{width: '20px'}}
             />
             <label htmlFor="check" style={{fontSize: '14px'}}>
-              Travel Assistance
+              Travel Assistance Needed
             </label>
           </div>
           {isCheckboxChecked ? (
@@ -412,9 +442,16 @@ class BookANewTrip extends Component {
                 className="travel-assistance-select"
                 onChange={onUpdateTravelAssistance}
               >
-                {travelAssistanceList.map(each => (
-                  <option value={each.value}>{each.displayText}</option>
-                ))}
+                {travelAssistanceList.map(each => {
+                  if (each.displayText === travelAssistance) {
+                    return (
+                      <option value={each.value} selected="true">
+                        {each.displayText}
+                      </option>
+                    )
+                  }
+                  return <option value={each.value}>{each.displayText}</option>
+                })}
               </select>
             </div>
           ) : (
@@ -580,7 +617,7 @@ class BookANewTrip extends Component {
             className="awesome-tick"
           />
           <h1>Awesome!</h1>
-          <p>Your book has been confirmed</p>
+          <p>Your booking has been confirmed</p>
           <button type="button" className="next-button" onClick={bookAnewTrip}>
             Book a new trip
           </button>
