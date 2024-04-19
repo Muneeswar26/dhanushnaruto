@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import {Component} from 'react'
 import ReactContext from './context/ReactContext'
 import Login from './components/Login'
@@ -39,20 +39,18 @@ class App extends Component {
           updateTrips: this.updateTrips,
         }}
       >
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <ProtectedRoute exact path="/" component={Home} />
-            <ProtectedRoute
-              exact
-              path="/book-a-new-trip"
-              component={BookANewTrip}
-            />
-            <ProtectedRoute exact path="/my-trips" component={MyTrips} />
-            <Route exact path="/bad-path" component={NotFound} />
-            <Route component={NotFound} />
-          </Switch>
-        </BrowserRouter>
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute
+            exact
+            path="/book-a-new-trip"
+            component={BookANewTrip}
+          />
+          <ProtectedRoute exact path="/my-trips" component={MyTrips} />
+          <Route exact path="/bad-path" component={NotFound} />
+          <Route component={NotFound} />
+        </Switch>
       </ReactContext.Provider>
     )
   }

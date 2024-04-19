@@ -52,7 +52,7 @@ class BookANewTrip extends Component {
     childrenAgeCount: 0,
     infantAgeCount: 0,
     isCheckboxChecked: false,
-    travelAssistance: travelAssistanceList[2].displayText,
+    travelAssistance: travelAssistanceList[0].value,
     nameErrMsg: '',
     startErrMsg: '',
     endErrMsg: '',
@@ -206,6 +206,7 @@ class BookANewTrip extends Component {
       }
     }
     const previousButton = () => {
+      stepsList[0].isCompleted = false
       this.setState({activeId: stepsList[0].stepId})
     }
 
@@ -291,6 +292,7 @@ class BookANewTrip extends Component {
       }))
     }
     const previousButton = () => {
+      stepsList[1].isCompleted = false
       this.setState({activeId: stepsList[1].stepId})
     }
     const nextButton = () => {
@@ -406,6 +408,7 @@ class BookANewTrip extends Component {
       this.setState({travelAssistance: event.target.value})
     }
     const previousButton = () => {
+      stepsList[2].isCompleted = false
       this.setState({activeId: stepsList[2].stepId})
     }
     const nextButton = () => {
@@ -439,19 +442,13 @@ class BookANewTrip extends Component {
               <br />
               <select
                 id="options"
+                value={travelAssistance}
                 className="travel-assistance-select"
                 onChange={onUpdateTravelAssistance}
               >
-                {travelAssistanceList.map(each => {
-                  if (each.displayText === travelAssistance) {
-                    return (
-                      <option value={each.value} selected="true">
-                        {each.displayText}
-                      </option>
-                    )
-                  }
-                  return <option value={each.value}>{each.displayText}</option>
-                })}
+                {travelAssistanceList.map(each => (
+                  <option value={each.value}>{each.displayText}</option>
+                ))}
               </select>
             </div>
           ) : (
@@ -555,7 +552,7 @@ class BookANewTrip extends Component {
                 <p className="confirmation-eachDetails-heading">
                   Travel Assistance:
                 </p>
-                <p>{travelAssistance}</p>
+                <p style={{textTransform: 'capitalize'}}>{travelAssistance}</p>
               </div>
               <div className="button-container" style={{marginTop: '10px'}}>
                 <button
