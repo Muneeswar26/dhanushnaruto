@@ -53,7 +53,7 @@ const MyTrips = props => (
             src="https://i.ibb.co/gmhNmKT/Frame-1000003896.png"
             alt="no trips"
           />
-          <p className="noItemsPage-heading">No upcoming trips</p>
+          <h1 className="noItemsPage-heading">No upcoming trips.</h1>
 
           <p style={{color: '#64748b'}}>
             When you book a trip, you will see your trip details here.
