@@ -399,6 +399,7 @@ class BookANewTrip extends Component {
 
   travelAssistance = () => {
     const {isCheckboxChecked, travelAssistance} = this.state
+    console.log(travelAssistance)
     const oncheckBoxChecked = () => {
       this.setState(prevState => ({
         isCheckboxChecked: !prevState.isCheckboxChecked,
@@ -426,7 +427,7 @@ class BookANewTrip extends Component {
             <input
               type="checkbox"
               checked={isCheckboxChecked}
-              onClick={oncheckBoxChecked}
+              onChange={oncheckBoxChecked}
               id="check"
               style={{width: '20px'}}
             />
@@ -443,11 +444,17 @@ class BookANewTrip extends Component {
               <select
                 id="options"
                 value={travelAssistance}
-                className="travel-assistance-select"
                 onChange={onUpdateTravelAssistance}
+                className="travel-assistance-select"
               >
                 {travelAssistanceList.map(each => (
-                  <option value={each.value}>{each.displayText}</option>
+                  <option
+                    value={each.value}
+                    key={each.value}
+                    selected={each.value === travelAssistance}
+                  >
+                    {each.displayText}
+                  </option>
                 ))}
               </select>
             </div>
@@ -514,6 +521,9 @@ class BookANewTrip extends Component {
             travelAssistance: travelAssistanceList[0].displayText,
           })
         }
+        const filteredList = travelAssistanceList.filter(
+          item => item.value === travelAssistance,
+        )
 
         return (
           <div className="mytrip-details-container">
@@ -552,7 +562,7 @@ class BookANewTrip extends Component {
                 <p className="confirmation-eachDetails-heading">
                   Travel Assistance:
                 </p>
-                <p style={{textTransform: 'capitalize'}}>{travelAssistance}</p>
+                <p>{filteredList[0].displayText}</p>
               </div>
               <div className="button-container" style={{marginTop: '10px'}}>
                 <button
