@@ -5,32 +5,12 @@ import ReactContext from '../../context/ReactContext'
 
 import './index.css'
 
-const stepsList = [
-  {
-    stepId: 'YOUR_DETAILS',
-    displayText: 'Your Details',
-    number: 1,
-    isCompleted: false,
-  },
-  {
-    stepId: 'DATE_SELECTION',
-    displayText: 'Date Selection',
-    number: 2,
-    isCompleted: false,
-  },
-  {stepId: 'GUESTS', displayText: 'Guests', number: 3, isCompleted: false},
-  {
-    stepId: 'TRAVEL_ASSISTANCE',
-    displayText: 'Travel Assistance',
-    number: 4,
-    isCompleted: false,
-  },
-  {
-    stepId: 'CONFIRMATION',
-    displayText: 'Confirmation',
-    number: 5,
-    isCompleted: false,
-  },
+const activeList = [
+  {stepId: 'YOUR_DETAILS'},
+  {stepId: 'DATE_SELECTION'},
+  {stepId: 'GUESTS'},
+  {stepId: 'TRAVEL_ASSISTANCE'},
+  {stepId: 'CONFIRMATION'},
 ]
 
 const travelAssistanceList = [
@@ -42,7 +22,34 @@ const travelAssistanceList = [
 
 class BookANewTrip extends Component {
   state = {
-    activeId: stepsList[0].stepId,
+    stepsList: [
+      {
+        stepId: 'YOUR_DETAILS',
+        displayText: 'Your Details',
+        number: 1,
+        isCompleted: false,
+      },
+      {
+        stepId: 'DATE_SELECTION',
+        displayText: 'Date Selection',
+        number: 2,
+        isCompleted: false,
+      },
+      {stepId: 'GUESTS', displayText: 'Guests', number: 3, isCompleted: false},
+      {
+        stepId: 'TRAVEL_ASSISTANCE',
+        displayText: 'Travel Assistance',
+        number: 4,
+        isCompleted: false,
+      },
+      {
+        stepId: 'CONFIRMATION',
+        displayText: 'Confirmation',
+        number: 5,
+        isCompleted: false,
+      },
+    ],
+    activeId: activeList[0].stepId,
     name: '',
     startLocation: '',
     endLocation: '',
@@ -68,6 +75,7 @@ class BookANewTrip extends Component {
       nameErrMsg,
       startErrMsg,
       endErrMsg,
+      stepsList,
     } = this.state
 
     const onUpdateName = event => {
@@ -96,8 +104,22 @@ class BookANewTrip extends Component {
           startErrMsg: '',
         })
       } else {
-        stepsList[0].isCompleted = true
-        this.setState({activeId: stepsList[1].stepId})
+        const updatedStepList = stepsList.map(each => {
+          if (each.stepId === 'YOUR_DETAILS') {
+            return {
+              stepId: 'YOUR_DETAILS',
+              displayText: 'Your Details',
+              number: 1,
+              isCompleted: true,
+            }
+          }
+          return each
+        })
+
+        this.setState({
+          activeId: activeList[1].stepId,
+          stepsList: updatedStepList,
+        })
       }
     }
 
@@ -164,7 +186,13 @@ class BookANewTrip extends Component {
   }
 
   dateSelectionPage = () => {
-    const {startDate, endDate, startDateErrMsg, endDateErrMsg} = this.state
+    const {
+      startDate,
+      endDate,
+      startDateErrMsg,
+      endDateErrMsg,
+      stepsList,
+    } = this.state
 
     const onstartDateErrMsg = event => {
       if (event.target.value === '') {
@@ -201,13 +229,39 @@ class BookANewTrip extends Component {
           endDateErrMsg: 'The end date cannot be less than the start date',
         })
       } else {
-        stepsList[1].isCompleted = true
-        this.setState({activeId: stepsList[2].stepId})
+        const updatedStepList = stepsList.map(each => {
+          if (each.stepId === 'DATE_SELECTION') {
+            return {
+              stepId: 'DATE_SELECTION',
+              displayText: 'Date Selection',
+              number: 2,
+              isCompleted: true,
+            }
+          }
+          return each
+        })
+        this.setState({
+          activeId: activeList[2].stepId,
+          stepsList: updatedStepList,
+        })
       }
     }
     const previousButton = () => {
-      stepsList[0].isCompleted = false
-      this.setState({activeId: stepsList[0].stepId})
+      const updatedStepList = stepsList.map(each => {
+        if (each.stepId === 'YOUR_DETAILS') {
+          return {
+            stepId: 'YOUR_DETAILS',
+            displayText: 'Your Details',
+            number: 1,
+            isCompleted: false,
+          }
+        }
+        return each
+      })
+      this.setState({
+        activeId: activeList[0].stepId,
+        stepsList: updatedStepList,
+      })
     }
 
     return (
@@ -259,7 +313,12 @@ class BookANewTrip extends Component {
   }
 
   guestsPage = () => {
-    const {adultAgeCount, childrenAgeCount, infantAgeCount} = this.state
+    const {
+      adultAgeCount,
+      childrenAgeCount,
+      infantAgeCount,
+      stepsList,
+    } = this.state
     const onAdultIncrement = () => {
       this.setState(prevState => ({adultAgeCount: prevState.adultAgeCount + 1}))
     }
@@ -292,19 +351,42 @@ class BookANewTrip extends Component {
       }))
     }
     const previousButton = () => {
-      stepsList[1].isCompleted = false
-      this.setState({activeId: stepsList[1].stepId})
+      const updatedStepList = stepsList.map(each => {
+        if (each.stepId === 'DATE_SELECTION') {
+          return {
+            stepId: 'DATE_SELECTION',
+            displayText: 'Date Selection',
+            number: 2,
+            isCompleted: false,
+          }
+        }
+        return each
+      })
+      this.setState({activeId: stepsList[1].stepId, stepsList: updatedStepList})
     }
     const nextButton = () => {
-      stepsList[2].isCompleted = true
-      this.setState({activeId: stepsList[3].stepId})
+      const updatedStepList = stepsList.map(each => {
+        if (each.stepId === 'GUESTS') {
+          return {
+            stepId: 'GUESTS',
+            displayText: 'Guests',
+            number: 3,
+            isCompleted: true,
+          }
+        }
+        return each
+      })
+      this.setState({
+        activeId: activeList[3].stepId,
+        stepsList: updatedStepList,
+      })
     }
 
     return (
-      <div className="mytrip-details-container">
-        <h1>Guests</h1>
-        <p className="mytrip-details-description">Select your Guests</p>
-        <div className="detailsform-card">
+      <div className="myTrip-details-container">
+        <h1 className="travel-heading">Guests</h1>
+        <p className="myTrip-details-description">Select your Guests</p>
+        <div className="detailsForm-card">
           <div className="guest-container-card">
             <div>
               <p className="guest-page-para">Adults</p>
@@ -398,9 +480,9 @@ class BookANewTrip extends Component {
   }
 
   travelAssistance = () => {
-    const {isCheckboxChecked, travelAssistance} = this.state
+    const {isCheckboxChecked, travelAssistance, stepsList} = this.state
     console.log(travelAssistance)
-    const oncheckBoxChecked = () => {
+    const onCheckBoxChecked = () => {
       this.setState(prevState => ({
         isCheckboxChecked: !prevState.isCheckboxChecked,
       }))
@@ -409,25 +491,51 @@ class BookANewTrip extends Component {
       this.setState({travelAssistance: event.target.value})
     }
     const previousButton = () => {
-      stepsList[2].isCompleted = false
-      this.setState({activeId: stepsList[2].stepId})
+      const updatedStepList = stepsList.map(each => {
+        if (each.stepId === 'GUESTS') {
+          return {
+            stepId: 'GUESTS',
+            displayText: 'Guests',
+            number: 3,
+            isCompleted: false,
+          }
+        }
+        return each
+      })
+      this.setState({
+        activeId: activeList[2].stepId,
+        stepsList: updatedStepList,
+      })
     }
     const nextButton = () => {
-      stepsList[3].isCompleted = true
-      this.setState({activeId: stepsList[4].stepId})
+      const updatedStepList = stepsList.map(each => {
+        if (each.stepId === 'TRAVEL_ASSISTANCE') {
+          return {
+            stepId: 'TRAVEL_ASSISTANCE',
+            displayText: 'Travel Assistance',
+            number: 4,
+            isCompleted: true,
+          }
+        }
+        return each
+      })
+      this.setState({
+        activeId: activeList[4].stepId,
+        stepsList: updatedStepList,
+      })
     }
     return (
-      <div className="mytrip-details-container">
-        <h1>Travel Assistance</h1>
-        <p className="mytrip-details-description">
+      <div className="myTrip-details-container">
+        <h1 className="travel-heading">Travel Assistance</h1>
+        <p className="myTrip-details-description">
           Select your travel assistance
         </p>
-        <div className="detailsform-card" style={{width: '350px'}}>
+        <div className="detailsForm-card" style={{width: '350px'}}>
           <div style={{marginBottom: '20px'}}>
             <input
               type="checkbox"
               checked={isCheckboxChecked}
-              onChange={oncheckBoxChecked}
+              onChange={onCheckBoxChecked}
               id="check"
               style={{width: '20px'}}
             />
@@ -492,23 +600,35 @@ class BookANewTrip extends Component {
           childrenAgeCount,
           infantAgeCount,
           travelAssistance,
+          stepsList,
         } = this.state
 
         const {addTrip} = value
         const confirmButton = () => {
           const tripObject = {id: uuidv4(), endLocation, startDate, endDate}
           addTrip(tripObject)
-          stepsList[4].isCompleted = true
-          this.setState({activeId: 'awesomePage'})
+          const updatedStepList = stepsList.map(each => {
+            if (each.stepId === 'CONFIRMATION') {
+              return {
+                stepId: 'CONFIRMATION',
+                displayText: 'Confirmation',
+                number: 5,
+                isCompleted: true,
+              }
+            }
+            return each
+          })
+
+          this.setState({activeId: 'awesomePage', stepsList: updatedStepList})
         }
         const cancelButton = () => {
-          stepsList[0].isCompleted = false
-          stepsList[1].isCompleted = false
-          stepsList[2].isCompleted = false
-          stepsList[3].isCompleted = false
-          stepsList[4].isCompleted = false
+          const updatedStepList = stepsList.map(each => ({
+            ...each,
+            isCompleted: false,
+          }))
           this.setState({
-            activeId: stepsList[0].stepId,
+            stepsList: updatedStepList,
+            activeId: activeList[0].stepId,
             name: '',
             startLocation: '',
             endLocation: '',
@@ -521,6 +641,7 @@ class BookANewTrip extends Component {
             travelAssistance: travelAssistanceList[0].displayText,
           })
         }
+
         const filteredList = travelAssistanceList.filter(
           item => item.value === travelAssistance,
         )
@@ -588,14 +709,15 @@ class BookANewTrip extends Component {
   )
 
   awesomePage = () => {
+    const {stepsList} = this.state
     const bookAnewTrip = () => {
-      stepsList[0].isCompleted = false
-      stepsList[1].isCompleted = false
-      stepsList[2].isCompleted = false
-      stepsList[3].isCompleted = false
-      stepsList[4].isCompleted = false
+      const updatedStepList = stepsList.map(each => ({
+        ...each,
+        isCompleted: false,
+      }))
       this.setState({
-        activeId: stepsList[0].stepId,
+        stepsList: updatedStepList,
+        activeId: activeList[0].stepId,
         name: '',
         startLocation: '',
         endLocation: '',
@@ -635,15 +757,15 @@ class BookANewTrip extends Component {
 
   switchStatementFunction = activeId => {
     switch (activeId) {
-      case stepsList[0].stepId:
+      case activeList[0].stepId:
         return this.yourDetailsPage()
-      case stepsList[1].stepId:
+      case activeList[1].stepId:
         return this.dateSelectionPage()
-      case stepsList[2].stepId:
+      case activeList[2].stepId:
         return this.guestsPage()
-      case stepsList[3].stepId:
+      case activeList[3].stepId:
         return this.travelAssistance()
-      case stepsList[4].stepId:
+      case activeList[4].stepId:
         return this.confirmation()
       case 'awesomePage':
         return this.awesomePage()
@@ -653,7 +775,7 @@ class BookANewTrip extends Component {
   }
 
   render() {
-    const {activeId} = this.state
+    const {activeId, stepsList} = this.state
     return (
       <div>
         <Header />
@@ -661,11 +783,11 @@ class BookANewTrip extends Component {
           <div>
             <ul>
               {stepsList.map(each => {
-                let activelistNumberStyle = ''
-                let activelistTextStyle = ''
+                let activeListNumberStyle = ''
+                let activeListTextStyle = ''
                 if (each.stepId === activeId) {
-                  activelistNumberStyle = 'active-list-item-number'
-                  activelistTextStyle = 'active-text-color'
+                  activeListNumberStyle = 'active-list-item-number'
+                  activeListTextStyle = 'active-text-color'
                 }
 
                 return (
@@ -679,13 +801,13 @@ class BookANewTrip extends Component {
                         />
                       ) : (
                         <p
-                          className={`list-item-number ${activelistNumberStyle}`}
+                          className={`list-item-number ${activeListNumberStyle}`}
                         >
                           {each.number}
                         </p>
                       )}
 
-                      <p className={activelistTextStyle}>{each.displayText}</p>
+                      <p className={activeListTextStyle}>{each.displayText}</p>
                     </div>
                   </li>
                 )
